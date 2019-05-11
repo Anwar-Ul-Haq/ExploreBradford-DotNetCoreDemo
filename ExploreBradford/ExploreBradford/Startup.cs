@@ -26,6 +26,8 @@ namespace ExploreBradford
             {
                 DeveloperExceptions = _configuration.GetValue<bool>("FeatureToggles:DeveloperExceptions")
             });
+
+            services.AddMvc();
         }
 
        
@@ -46,6 +48,11 @@ namespace ExploreBradford
                 await next();
             });
 
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("Default", "{controller=Home}/{action=Index}/{id?}");
+
+            });
 
             app.UseFileServer();
         }
