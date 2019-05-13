@@ -7,6 +7,7 @@ using ExploreBradford.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,15 @@ namespace ExploreBradford
                 var connectionString = _configuration.GetConnectionString("BlogDataContext");
                 options.UseSqlServer(connectionString);
             });
+
+            services.AddDbContext<IdentityDataContext>(options =>
+            {
+                var connectionString = _configuration.GetConnectionString("IdentityDataContext");
+                options.UseSqlServer(connectionString);
+            });
+            services.AddIdentity<IdentityUser , IdentityRole>()
+                .AddEntityFrameworkStores<IdentityDataContext>();
+
             services.AddMvc();
         }
 
@@ -54,6 +64,9 @@ namespace ExploreBradford
 
                 await next();
             });
+
+            app.UseIdentity();
+
 
             app.UseMvc(routes =>
             {

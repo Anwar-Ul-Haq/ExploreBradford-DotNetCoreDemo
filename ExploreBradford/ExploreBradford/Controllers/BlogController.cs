@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ExploreBradford.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
 namespace ExploreBradford.Controllers
 {
+  
     [Route("blog")]
     public class BlogController : Controller
     {
@@ -42,12 +44,14 @@ namespace ExploreBradford.Controllers
             return View(post);
         }
 
+        [Authorize]
         [HttpGet,Route("create")]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost,Route("create")]
         public IActionResult Create(Post post)
         {
